@@ -33,13 +33,17 @@ func main() {
 	}
 
 	router := chi.NewRouter()
+	router.Route("/url", func(r chi.Router) {
+		r.Use(middleware.BasicAuth("url-shortener", map[string]string{
+			cfg.HTTPServer.User: cfg.HTTPServer.Password,
+		}))
+		r.Post("/", save.New(log, storage))
+	})
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
 	router.Use(logger.New(log))
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.URLFormat)
-
-	router.Post("/url", save.New(log, storage))
 
 	log.Info("Server started", slog.String("address", cfg.Addr))
 

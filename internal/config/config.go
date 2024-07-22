@@ -17,6 +17,8 @@ type HTTPServer struct {
 	Addr        string        `yaml:"address" binding:"required"`
 	Timout      time.Duration `yaml:"timout" binding:"required"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" binding:"required"`
+	User        string        `yaml:"user" binding:"required"`
+	Password    string        `yaml:"password" binding:"required"`
 }
 
 func MustLoad() *Config {
